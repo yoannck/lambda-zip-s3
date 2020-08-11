@@ -1,0 +1,52 @@
+<html>
+  <header>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.727.1.min.js"></script>
+  </header>
+  <body>
+    TEST INVOKE LAMBDA FUNCTION
+  </body>
+</html>
+
+<script type="text/javascript">
+
+  const region = 'YOUR REGION';
+  const bucket = 'YOUR BUCKET';
+  const folder = 'YOUR FOLDER';
+  const accessKeyId = "YOUR ACCESS KEY ID";
+  const secretAccessKey = "YOUR SECRET ACCESS KEY";
+
+  AWS.config.update({
+    accessKeyId,
+    secretAccessKey,
+    region
+  })
+  const lambda = new AWS.Lambda();
+  let files = [
+    'YOUR KEY FILE',
+    'YOUR KEY FILE',
+    ...
+  ];
+  const payload = JSON.stringify({
+    'region'     : region,
+    'bucket'     : bucket,
+    'folder'     : folder,
+    'files'      : files,
+    'zipFileName': 'YOUR_ZIP_FILENAME.zip',
+    'keepOrderAndRename' : { rename: 'YOUR_FILE_RENAME', pad: 3 },
+  })
+
+  const params = {
+    FunctionName : 'YOUR_FUNCTION_LAMBDA_NAME',
+    Payload      : payload
+  }
+
+  lambda.invoke(params, function (err, data) {
+    if (err) {
+      console.log(err, err.stack) // an error occurred
+    } else {
+       console.log(data) // successful response
+       const res = JSON.parse(data.Payload);
+       window.location.assign(res.Location); // Load the download link
+    }
+  })
+</script>
