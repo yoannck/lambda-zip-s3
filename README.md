@@ -24,8 +24,10 @@ zipFileName **[string]** : Output Zip name
 
 keepOrderAndRename **[object]**
 keepOrderAndRename.rename **[string]** : Rename all your files with an increment number. ex: `[020] RENAME`
+(If null, keep the original name)
 keepOrderAndRename.pad **[number]** : The pad number order
 
+**TODO**
 source **[string]**: Bucket name where your files are located
 destination **[string]**: Bucket name where you want to upload your zipped file
 

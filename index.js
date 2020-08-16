@@ -24,7 +24,7 @@ exports.handler = function (event, context, callback) {
     const archiveFiles = files.map( fileName => {
       let extension = fileName.split('.').pop();
       return {
-        name: (keepOrderAndRename) ? `[${formatNumber(order++, keepOrderAndRename.pad)}] ${keepOrderAndRename.rename}.${extension}` : fileName
+        name: (keepOrderAndRename && keepOrderAndRename.rename) ? `[${formatNumber(order++, keepOrderAndRename.pad)}] ${keepOrderAndRename.rename}.${extension}` : `[${formatNumber(order++, keepOrderAndRename.pad)}] ${fileName}`
       }}
     );
 
