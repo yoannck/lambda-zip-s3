@@ -20,11 +20,15 @@ exports.handler = function (event, context, callback) {
   }
 
   try {
-    let order = 0;
+    let order = 1;
     const archiveFiles = files.map( fileName => {
-      let extension = fileName.split('.').pop();
+      const nb_truncated = 25;
+      let parts = fileName.split('.');
+      let extension = parts.pop();
+      let rename = parts.join(' ').substring(0, nb_truncated);
+      rename = rename.replace(/[\[\],]/g, '');
       return {
-        name: (keepOrderAndRename && keepOrderAndRename.rename) ? `[${formatNumber(order++, keepOrderAndRename.pad)}] ${keepOrderAndRename.rename}.${extension}` : `[${formatNumber(order++, keepOrderAndRename.pad)}] ${fileName}`
+        name: (keepOrderAndRename && keepOrderAndRename.rename) ? `[${formatNumber(order++, keepOrderAndRename.pad)}] ${keepOrderAndRename.rename.replace(/[\[\],]/g, '').substring(0, nb_truncated)}.${extension}` : `[${formatNumber(order++, keepOrderAndRename.pad)}] ${rename}.${extension}`
       }}
     );
 
