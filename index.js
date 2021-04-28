@@ -25,10 +25,18 @@ exports.handler = function (event, context, callback) {
       const nb_truncated = 25;
       let parts = fileName.split('.');
       let extension = parts.pop();
-      let rename = parts.join(' ').substring(0, nb_truncated);
+      let partsLength = parts.join(' ').length;
+      let rename = parts.join(' ').substring(partsLength - nb_truncated);
       rename = rename.replace(/[\[\],]/g, '');
+
+      if (keepOrderAndRename && keepOrderAndRename.rename) {
+        let kOAR = keepOrderAndRename.rename.replace(/[\[\],]/g, '');
+        partsLength = kOAR.length;
+        rename = kOAR.substring(partsLength - nb_truncated);
+      }
+
       return {
-        name: (keepOrderAndRename && keepOrderAndRename.rename) ? `[${formatNumber(order++, keepOrderAndRename.pad)}] ${keepOrderAndRename.rename.replace(/[\[\],]/g, '').substring(0, nb_truncated)}.${extension}` : `[${formatNumber(order++, keepOrderAndRename.pad)}] ${rename}.${extension}`
+        name: (keepOrderAndRename && keepOrderAndRename.rename) ? `${formatNumber(order++, keepOrderAndRename.pad)}_${rename}.${extension}` : `${formatNumber(order++, keepOrderAndRename.pad)}_${rename}.${extension}`
       }}
     );
 
